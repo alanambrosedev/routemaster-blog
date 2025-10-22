@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+//All the website pages, admin panel, dashboards belong here.
 /*
 Route::get() — handles a GET request (the type browsers make by default).
 '/' — the URL path (home page).
