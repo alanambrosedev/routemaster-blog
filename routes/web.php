@@ -52,3 +52,45 @@ Route::get('/info', function () {
 Route::get('/page', function () {
     return view('page');
 });
+
+Route::redirect('/home', '/page');
+//Now when you visit /home laravel instantly redirects to /dashboard
+
+//You can redirect and pass dynamic parameters
+Route::get('/posts/{id}', function ($id) {
+    return "Showing post with #{$id}";
+});
+
+Route::redirect('/show/{id}', '/posts/{id}');
+//Now visiting /show/5 will redirect to posts/5 Laravel replaces {id} automatically in the destination url.
+
+//redirect() helper can help you manually redirect from anywhere not just Route::redirect
+
+Route::get('/start', function () {
+    return redirect('/finish');
+});
+
+Route::get('/finish', function() {
+    return 'You have been redirected';
+});
+
+//This helper returns a redirect response - same effect but more flexible inside controller and logic
+
+//Create a route /start-here that redirects to /page (temporary).
+Route::redirect('/start-here', '/page', 302);
+
+//Create a route /go-home that redirects permanently to / (status 301).
+//Permanent status is 301 and 302 is temporary
+Route::get('/go-home', function () {
+    return redirect('/', 301);
+});
+
+// Create a route /article/{slug} and another /read/{slug} that redirects to it dynamically.
+Route::get('/article/{slug}', function ($slug) {
+    return "Reading article: {$slug}";
+});
+
+Route::get('/read/{slug}', function ($slug){
+    return redirect("/article/{$slug}");
+});
+
