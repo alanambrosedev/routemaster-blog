@@ -93,3 +93,22 @@ Route::get('/article/{slug}', function ($slug) {
 Route::get('/read/{slug}', function ($slug) {
     return redirect("/article/{$slug}");
 });
+
+Route::view('/about-us','about');
+
+//passing dynamic data visit blade file and /contact
+Route::view('/contact', 'contact', [
+    'email' => 'alan@grambil.com',
+    'phone'=> '909238213912'
+]);
+
+///privacy → static page with a privacy message using Route::view().
+Route::view('/privacy', 'privacy');
+
+///team → view route with ['members' => ['Alan', 'Maria', 'Dev']] and loop names.
+Route::view('/team','team', [
+    'members' => ['Alan', 'Maria', 'Dev']
+]);
+
+//thanks → static “Thank You!” page using Route::view().
+Route::view('/thanks', 'thanks');
