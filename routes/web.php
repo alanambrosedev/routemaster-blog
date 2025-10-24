@@ -120,3 +120,33 @@ Route::view('/thanks', 'thanks');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 //Add a route for submitting the form via POST /posts
 Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
+
+//optional parameters - use ? after the parameter name and provide a default value
+Route::get('/comments/{id?}', function ($id = null) {
+    return $id ? "Viewing comment #{$id}" : "Viewing all comments";
+});
+
+//parameter constraints (Regex) - sometimes you want only certain values
+Route::get('/comment/{id}', function ($id) {
+    return "Viewing the comment #{$id}";
+})->where('id', '[0-9]+'); // (now only numeric allowed for id eg: 1,23 & not allowed eg: abc,when)
+
+//multiple constaints using array
+Route::get('posts/{postId}/comments/{commentId}', function ($postId, $commentId) {
+    return "Post: {$postId}, Comment: {$commentId}";
+})->where(['postId' => '[0-9]+', 'commentId' => '[0-9]+']);
+
+//Route wildcards/fallbacks - Use * to capture everything
+Route::get('/pages/{any}', function ($any) {
+    return "You are viewing page: #{$any}";
+})->where('any', '.*');
+
+//fallback routes catches undefined routes
+Route::fallback(function () {
+    return "Page not exists!";
+});
+
+//named routes - for url generation very useful
+Route::get('/posts/{id}', function ($id) {
+    return "Viewing post #{$id}";
+})->name('posts.show');
