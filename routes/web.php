@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 // All the website pages, admin panel, dashboards belong here.
@@ -8,6 +9,7 @@ Route::get() — handles a GET request (the type browsers make by default).
 '/' — the URL path (home page).
 The function() — what to run when someone visits that URL.
 */
+
 Route::get('/', function () {
     return 'Welcome to RouteMaster Blog';
 });
@@ -94,21 +96,27 @@ Route::get('/read/{slug}', function ($slug) {
     return redirect("/article/{$slug}");
 });
 
-Route::view('/about-us','about');
+Route::view('/about-us', 'about');
 
 //passing dynamic data visit blade file and /contact
 Route::view('/contact', 'contact', [
     'email' => 'alan@grambil.com',
-    'phone'=> '909238213912'
+    'phone' => '909238213912'
 ]);
 
 ///privacy → static page with a privacy message using Route::view().
 Route::view('/privacy', 'privacy');
 
 ///team → view route with ['members' => ['Alan', 'Maria', 'Dev']] and loop names.
-Route::view('/team','team', [
+Route::view('/team', 'team', [
     'members' => ['Alan', 'Maria', 'Dev']
 ]);
 
 //thanks → static “Thank You!” page using Route::view().
 Route::view('/thanks', 'thanks');
+
+
+//Add a route for creating a new post: /posts/create
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+//Add a route for submitting the form via POST /posts
+Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
