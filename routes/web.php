@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -202,3 +203,12 @@ Route::controller([PostController::class])->prefix('posts')->group(function () {
     Route::get('/', 'index')->name('posts.index');
     Route::get('/posts/create')->name('posts.create');
 });
+
+
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
+Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+
+//Single action controllers for handling only one function
+Route::get('/about', AboutController::class);

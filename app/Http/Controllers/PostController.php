@@ -3,26 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 
 class PostController extends Controller
 {
-    public function create()
+    public function index()
     {
-        return view('posts.create');
+        return "Listing all posts";
     }
 
-    public function store(Request $request): RedirectResponse
+    public function show($id)
     {
-        // For now, just validate and dump data
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'body'  => 'required|string',
-        ]);
+        return "Showing post #{$id}";
+    }
 
-        // Later: save to DB
-        // Post::create($validated);
+    public function create()
+    {
+        return "Create post form";
+    }
 
-        return redirect()->route('posts.create')->with('success', 'Post submitted!');
+    public function store(Request $request)
+    {
+        return "Storing post...";
     }
 }
