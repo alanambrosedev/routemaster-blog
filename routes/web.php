@@ -150,3 +150,55 @@ Route::fallback(function () {
 Route::get('/posts/{id}', function ($id) {
     return "Viewing post #{$id}";
 })->name('posts.show');
+
+
+//Route grouping - Let you commanly apply settings to multiple routes at once, so you don't repeat
+//Prefix adds /posts to all the routes inside now /posts/create, /posts/{id}, /posts all work without repeat
+Route::prefix('posts')->group(function () {
+    Route::get('/', function () {
+        return "All posts";
+    });
+
+    Route::get('/create', function () {
+        return "Create a post form";
+    });
+
+    Route::get('/id?', function ($id) {
+        return "Viewing post #{$id}";
+    })->where(['id' => '[0-9]+']);
+});
+
+
+//name prefixes - you can also prefix route names
+Route::prefix('posts')->name('posts.')->group(function () {
+    Route::get('/', function () {
+        return "All posts";
+    })->name('index');
+
+    Route::get('/create', function () {
+        return "Create a post form";
+    })->name('create');
+
+    Route::get('/id?', function ($id) {
+        return "Viewing post #{$id}";
+    })->where(['id' => '[0-9]+'])->name('show');
+});
+
+
+//Middleware Grouping - you can apply middleware to a group of routes
+Route::middleware('auth')->prefix('posts')->name('posts.')->group(function () {
+    Route::get('/', function () {
+        return "All posts";
+    })->name('index');
+
+    Route::get('/create', function () {
+        return "Create a post form";
+    })->name('create');
+});
+
+
+//Controller Grouping
+Route::controller([PostController::class])->prefix('posts')->group(function () {
+    Route::get('/', 'index')->name('posts.index');
+    Route::get('/posts/create')->name('posts.create');
+});
