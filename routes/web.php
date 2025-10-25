@@ -122,7 +122,7 @@ Route::view('/thanks', 'thanks');
 //Add a route for creating a new post: /posts/create
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 //Add a route for submitting the form via POST /posts
-Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
+Route::post('/posts/store', [PostController::class, 'store'])->name('posts.save');
 
 //optional parameters - use ? after the parameter name and provide a default value
 Route::get('/comments/{id?}', function ($id = null) {
@@ -152,7 +152,7 @@ Route::fallback(function () {
 //named routes - for url generation very useful
 Route::get('/posts/{id}', function ($id) {
     return "Viewing post #{$id}";
-})->name('posts.show');
+})->name('posts.edit');
 
 
 //Route grouping - Let you commanly apply settings to multiple routes at once, so you don't repeat
@@ -201,16 +201,16 @@ Route::middleware('auth')->prefix('posts')->name('posts.')->group(function () {
 
 
 //Controller Grouping
-Route::controller([PostController::class])->prefix('posts')->group(function () {
+Route::controller(PostController::class)->prefix('posts')->group(function () {
     Route::get('/', 'index')->name('posts.index');
-    Route::get('/posts/create')->name('posts.create');
+    Route::get('/create')->name('posts.create');
 });
 
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
-Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.change');
 
 //Single action controllers for handling only one function
 Route::get('/about', AboutController::class);
