@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\PostController;
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 // All the website pages, admin panel, dashboards belong here.
@@ -212,3 +214,12 @@ Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
 //Single action controllers for handling only one function
 Route::get('/about', AboutController::class);
+
+Route::bind('post', function ($value) {
+    return Post::where('title', $value)->firstOrFail();
+}); //Explicit Binding - Now $post can use title instead of ID.
+
+//Nested Model binding - For relationships ensures automatically Comment belongs to post if defined contraints in the model
+Route::get('/posts/{post}/categories/{category}', function (Post $post, Category $category) {
+    return "Post: {$post->title}, Category: {$category->id}";
+});
