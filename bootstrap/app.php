@@ -4,8 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-//Laravel loads route files from here app.php and automatically registers it.
-//You don't need to require them manually - they're autoloaded via frameworks's Route Service provider
+// Laravel loads route files from here app.php and automatically registers it.
+// You don't need to require them manually - they're autoloaded via frameworks's Route Service provider
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',

@@ -101,69 +101,67 @@ Route::get('/read/{slug}', function ($slug) {
 
 Route::view('/about-us', 'about');
 
-//passing dynamic data visit blade file and /contact
+// passing dynamic data visit blade file and /contact
 Route::view('/contact', 'contact', [
     'email' => 'alan@grambil.com',
-    'phone' => '909238213912'
+    'phone' => '909238213912',
 ]);
 
-///privacy → static page with a privacy message using Route::view().
+// /privacy → static page with a privacy message using Route::view().
 Route::view('/privacy', 'privacy');
 
-///team → view route with ['members' => ['Alan', 'Maria', 'Dev']] and loop names.
+// /team → view route with ['members' => ['Alan', 'Maria', 'Dev']] and loop names.
 Route::view('/team', 'team', [
-    'members' => ['Alan', 'Maria', 'Dev']
+    'members' => ['Alan', 'Maria', 'Dev'],
 ]);
 
-//thanks → static “Thank You!” page using Route::view().
+// thanks → static “Thank You!” page using Route::view().
 Route::view('/thanks', 'thanks');
 
-
-//Add a route for creating a new post: /posts/create
+// Add a route for creating a new post: /posts/create
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-//Add a route for submitting the form via POST /posts
+// Add a route for submitting the form via POST /posts
 Route::post('/posts/store', [PostController::class, 'store'])->name('posts.save');
 
-//optional parameters - use ? after the parameter name and provide a default value
+// optional parameters - use ? after the parameter name and provide a default value
 Route::get('/comments/{id?}', function ($id = null) {
-    return $id ? "Viewing comment #{$id}" : "Viewing all comments";
+    return $id ? "Viewing comment #{$id}" : 'Viewing all comments';
 });
 
-//parameter constraints (Regex) - sometimes you want only certain values
+// parameter constraints (Regex) - sometimes you want only certain values
 Route::get('/comment/{id}', function ($id) {
     return "Viewing the comment #{$id}";
 })->where('id', '[0-9]+'); // (now only numeric allowed for id eg: 1,23 & not allowed eg: abc,when)
 
-//multiple constaints using array
+// multiple constaints using array
 Route::get('posts/{postId}/comments/{commentId}', function ($postId, $commentId) {
     return "Post: {$postId}, Comment: {$commentId}";
 })->where(['postId' => '[0-9]+', 'commentId' => '[0-9]+']);
 
-//Route wildcards/fallbacks - Use * to capture everything
+// Route wildcards/fallbacks - Use * to capture everything
 Route::get('/pages/{any}', function ($any) {
     return "You are viewing page: #{$any}";
 })->where('any', '.*');
 
-//fallback routes catches undefined routes
+// fallback routes catches undefined routes
 Route::fallback(function () {
-    return "Page not exists!";
+    return 'Page not exists!';
 });
 
-//named routes - for url generation very useful
+// named routes - for url generation very useful
 Route::get('/posts/{id}', function ($id) {
     return "Viewing post #{$id}";
 })->name('posts.edit');
 
-
-//Route grouping - Let you commanly apply settings to multiple routes at once, so you don't repeat
-//Prefix adds /posts to all the routes inside now /posts/create, /posts/{id}, /posts all work without repeat
+// Route grouping - Let you commanly apply settings to multiple routes at once, so you don't repeat
+// Prefix adds /posts to all the routes inside now /posts/create, /posts/{id}, /posts all work without repeat
 Route::prefix('posts')->group(function () {
     Route::get('/', function () {
-        return "All posts";
+        return 'All posts';
     });
 
     Route::get('/create', function () {
-        return "Create a post form";
+        return 'Create a post form';
     });
 
     Route::get('/id?', function ($id) {
@@ -171,15 +169,14 @@ Route::prefix('posts')->group(function () {
     })->where(['id' => '[0-9]+']);
 });
 
-
-//name prefixes - you can also prefix route names
+// name prefixes - you can also prefix route names
 Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/', function () {
-        return "All posts";
+        return 'All posts';
     })->name('index');
 
     Route::get('/create', function () {
-        return "Create a post form";
+        return 'Create a post form';
     })->name('create');
 
     Route::get('/id?', function ($id) {
@@ -187,39 +184,36 @@ Route::prefix('posts')->name('posts.')->group(function () {
     })->where(['id' => '[0-9]+'])->name('show');
 });
 
-
-//Middleware Grouping - you can apply middleware to a group of routes
+// Middleware Grouping - you can apply middleware to a group of routes
 Route::middleware('auth')->prefix('posts')->name('posts.')->group(function () {
     Route::get('/', function () {
-        return "All posts";
+        return 'All posts';
     })->name('index');
 
     Route::get('/create', function () {
-        return "Create a post form";
+        return 'Create a post form';
     })->name('create');
 });
 
-
-//Controller Grouping
+// Controller Grouping
 Route::controller(PostController::class)->prefix('posts')->group(function () {
     Route::get('/', 'index')->name('posts.index');
     Route::get('/create')->name('posts.create');
 });
-
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.change');
 
-//Single action controllers for handling only one function
+// Single action controllers for handling only one function
 Route::get('/about', AboutController::class);
 
 Route::bind('post', function ($value) {
     return Post::where('title', $value)->firstOrFail();
-}); //Explicit Binding - Now $post can use title instead of ID.
+}); // Explicit Binding - Now $post can use title instead of ID.
 
-//Nested Model binding - For relationships ensures automatically Comment belongs to post if defined contraints in the model
+// Nested Model binding - For relationships ensures automatically Comment belongs to post if defined contraints in the model
 Route::get('/posts/{post}/categories/{category}', function (Post $post, Category $category) {
     return "Post: {$post->title}, Category: {$category->id}";
 });

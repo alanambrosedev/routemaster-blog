@@ -9,21 +9,21 @@ class PostController extends Controller
 {
     public function index()
     {
-        return "Listing all posts";
+        return 'Listing all posts';
     }
 
-    public function show(Post $post) //model binding
+    public function show(Post $post) // model binding
     {
-        return "Viewing post #{$post->title}"; //laravel automatically fetches the Post with the given Id
+        return "Viewing post #{$post->title}"; // laravel automatically fetches the Post with the given Id
     }
 
     public function create()
     {
-        return "Create post form";
+        return 'Create post form';
     }
 
     public function store(Request $request)
     {
-        return "Storing post...";
+        return 'Storing post...';
     }
 }

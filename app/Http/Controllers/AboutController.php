@@ -11,6 +11,6 @@ class AboutController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return "About Page";
+        return 'About Page';
     }
 }

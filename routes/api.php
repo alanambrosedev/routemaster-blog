@@ -12,12 +12,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
 Route::get('/posts', function () {
     return ['title' => 'API example post'];
 });
 
-
 Route::get('/info', function () {
-    return ['app' => config('app.name') , 'version' => app()->version()];
+    return ['app' => config('app.name'), 'version' => app()->version()];
 });
